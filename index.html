@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>GeoChart Generator</title>
+	<meta charset="utf-8"  />
+	
+	<!-- jExcel scripts and styles -->
+	<script src="scripts/jquery-3.2.1.min.js"></script>
+	<script src="scripts/jexcel/js/jquery.jexcel.js"></script>
+	<link rel="stylesheet" href="scripts/jexcel/css/jquery.jexcel.css" type="text/css"></link>
+	
+    <!-- toastr script and style -->
+    <script src="scripts/toastr/toastr.min.js"></script>
+    <link rel="stylesheet" href="scripts/toastr/toastr.min.css" type="text/css"></link>
+    <script>
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
+    
+    <!-- Google Charts scripts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+	<!-- General styles -->
+	<link rel="stylesheet" href="style/general.css" type="text/css"></link>
+    
+    <!-- Styles for this page -->
+    <link rel="stylesheet" href="style/mapgen.css" type="text/css"></link>
+	
+	<!-- jExcel handling code -->
+	<script type="text/javascript" src="scripts/mapgen.js"></script>
+</head>
+
+<body>
+    <h1>GeoChart Generator</h1>
+    
+    <div id="content">
+        <!-- jExcel input table -->
+        <div id="data_entry"></div>
+        
+        <!-- Table controls -->
+        <div id="table_controls">
+            <input type="submit" value="Add row" 
+             class="button" onClick="$('#data_entry').jexcel('insertRow', 1)">
+            <input type="submit" value="Add 10 rows" 
+             class="button" onClick="$('#data_entry').jexcel('insertRow', 10)">
+            <p class="label">Map zoom level:</p>
+            <select id="map_region">
+                <option value="world">World</option>
+                <option value="002">Africa</option>
+                <option value="019">Americas</option>
+                <option value="150">Asia</option>
+                <option value="150">Europe</option>
+                <option value="009">Oceania</option>
+                <option value="GB">United Kingdom</option>
+            </select>
+            <p class="label">Rows refer to:</p>
+            <select id="country_region">
+                <option value="countries">Countries</option>
+                <option value="provinces">Regions</option>
+            </select>
+            <p class="label">Values refer to:</p>
+            <input type="text" id="units" placeholder="e.g. £ millions">
+            <input type="submit" value="Create map"
+             class="button" onClick="create_map()">
+        </div>
+    </div>
+    
+    <!-- Output map -->
+    <div id="map_container">
+        <h2>Map visualisation</h2>
+        <div id="gmap"></div>
+        <h3>Share this map</h3>
+        <p class="label">Embed interactive visualisation (click to copy):</p>
+        <textarea id="embed_interactive" cols=100 rows=10 readonly 
+         onClick="this.select(); document.execCommand('copy');toastr['success']('Copied to clipboard.');">dummy</textarea>
+        <p class="label">Embed image (click to copy):</p>
+        <textarea id="embed_image" cols=100 rows=10 readonly
+         onClick="this.select(); document.execCommand('copy');toastr['success']('Copied to clipboard.');">dummy</textarea>
+        <input type="submit" class="button" onClick="document.getElementById('printable_chart').style.display = 'inline';" value="Display downloadable version">
+        <div id="printable_chart" style="display: none; padding-bottom: 50px;">
+            <img id="printable_chart_data" src="">
+        </div>
+    </div>
+    
+    <script>create_table();</script>
+</body>
+</html>
